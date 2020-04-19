@@ -1,31 +1,30 @@
-require 'pry'
 class Triangle
   
-  attr_accessor :a, :b, :c
+  attr_accessor :leg_a, :leg_b, :leg_c
   
-  def initialize(a, b, c)
-    @a = a
-    @b = b
-    @c = c
+  def initialize(leg_a, leg_b, leg_c)
+    @leg_a = leg_a
+    @leg_b = leg_b
+    @leg_c = leg_c
   end
   
   def kind
-    if (a <= 0 || b <= 0 || c <= 0)
-      raise TriangleError
-    end
-      if (a == b && b == c )
+    triangle?
+    if (leg_a == leg_b && leg_b == leg_c )
         :equilateral
-      elsif ((a == b && b != c) || (a != b && b == c) || (a == c && a != b))
-        :isosceles
-      elsif (a != b && b != c && c != a)
-        :scalene
-      end
-    
-  end 
-end
+    elsif ((leg_a == leg_b && leg_b != leg_c) || (leg_a != leg_b && leg_b == leg_c) || (leg_a == leg_c && leg_a != leg_b))
+      :isosceles
+    else
+      :scalene
+    end
+  end
 
-    
+  def triangle?
+    triangle = [(leg_a + leg_b > leg_c), (leg_a + leg_c > leg_b), (leg_b + leg_c > leg_a)]
+    raise TriangleError if triangle.include?(false)
+  end
 
-class TriangleError < StandardError
- 
+  class TriangleError < StandardError
+  end
+  
 end
